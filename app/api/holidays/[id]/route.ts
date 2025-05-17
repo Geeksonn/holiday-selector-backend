@@ -1,7 +1,7 @@
 import getUser from '@/lib/auth';
-import { getAllHolidays, createHoliday } from '@/lib/holidays';
+import { getHolidayById, deleteHoliday } from '@/lib/holidays';
 
-export async function GET(request: Request) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
 
     if (!token) {
@@ -13,8 +13,10 @@ export async function GET(request: Request) {
         return Response.json({ error: 'Invalid token' }, { status: 401 });
     }
 
+    const { id } = await params;
+
     try {
-        const data = await getAllHolidays(token, user.id);
+        const data = await getHolidayById(token, id);
 
         return Response.json(JSON.stringify(data), {
             status: 200,
@@ -25,7 +27,7 @@ export async function GET(request: Request) {
     }
 }
 
-export async function POST(request: Request) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
 
     if (!token) {
@@ -37,16 +39,13 @@ export async function POST(request: Request) {
         return Response.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const holiday = await request.json();
+    const { id } = await params;
 
     try {
-        const data = await createHoliday(token, holiday);
-        return Response.json(JSON.stringify(data), {
-            status: 201,
-            headers: { 'Content-Type': 'application/json' },
-        });
+        const data = await deleteHoliday(token, id);
+        return new Response(null, { status: 204 });
     } catch (error) {
-        console.error('Error creating holiday:', error);
-        return Response.json({ error: 'Cannot create holiday' }, { status: 500 });
+        console.error('Error deleting holiday:', error);
+        return Response.json({ error: 'Cannot delete holiday' }, { status: 500 });
     }
 }

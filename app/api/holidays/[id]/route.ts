@@ -23,6 +23,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
             headers: { 'Content-Type': 'application/json' },
         });
     } catch (error) {
+        console.error('Error retrieving holiday data:', error);
         return Response.json({ error: 'Cannot retrieve holiday data' }, { status: 500 });
     }
 }
@@ -42,7 +43,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
     const { id } = await params;
 
     try {
-        const data = await deleteHoliday(token, id);
+        await deleteHoliday(token, id);
         return new Response(null, { status: 204 });
     } catch (error) {
         console.error('Error deleting holiday:', error);

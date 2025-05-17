@@ -21,6 +21,7 @@ export async function GET(request: Request) {
             headers: { 'Content-Type': 'application/json' },
         });
     } catch (error) {
+        console.error('Error retrieving holiday data:', error);
         return Response.json({ error: 'Cannot retrieve holiday data' }, { status: 500 });
     }
 }

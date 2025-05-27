@@ -49,3 +49,15 @@ export const deleteHoliday = async (token: string, holidayId: string) => {
 
     return data;
 };
+
+export const updateHoliday = async (token: string, holidayId: string, updates: Partial<Holiday>) => {
+    const supabase = await createClient(token);
+
+    const { data, error } = await supabase
+        .from('holidays')
+        .update(updates)
+        .eq('id', holidayId);
+    if (error) throw error;
+
+    return data;
+};

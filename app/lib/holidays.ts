@@ -38,7 +38,7 @@ export const createHoliday = async (token: string, holiday: Holiday) => {
     const { data, error } = await supabase.from('holidays').insert(holiday).select();
     if (error) throw error;
 
-    return data[0];
+    return data;
 };
 
 export const deleteHoliday = async (token: string, holidayId: string) => {

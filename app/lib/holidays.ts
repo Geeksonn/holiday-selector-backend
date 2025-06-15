@@ -35,7 +35,7 @@ export const getHolidayById = async (token: string, holidayId: string) => {
 export const createHoliday = async (token: string, holiday: Holiday) => {
     const supabase = await createClient(token);
 
-    const { data, error } = await supabase.from('holidays').insert(holiday);
+    const { data, error } = await supabase.from('holidays').insert(holiday).select();
     if (error) throw error;
 
     return data;

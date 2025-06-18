@@ -44,7 +44,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
     try {
         await deleteHoliday(token, id);
-        return new Response(null, { status: 204 });
+        return Response.json({ message: 'successfully deleted.' }, { status: 200 });
     } catch (error) {
         console.error('Error deleting holiday:', error);
         return Response.json({ error: 'Cannot delete holiday' }, { status: 500 });

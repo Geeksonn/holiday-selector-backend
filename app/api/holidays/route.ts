@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     try {
         const data = await getAllHolidays(token, user.id, user.email || '');
 
-        return Response.json(JSON.stringify(data), {
+        return Response.json(data, {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
         });
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 
     try {
         const data = await createHoliday(token, holiday);
-        return Response.json(JSON.stringify(data), {
+        return Response.json(data, {
             status: 201,
             headers: { 'Content-Type': 'application/json' },
         });

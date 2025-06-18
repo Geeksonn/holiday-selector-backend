@@ -18,7 +18,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     try {
         const data = await getHolidayById(token, id);
 
-        return Response.json(JSON.stringify(data), {
+        return Response.json(data, {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
         });

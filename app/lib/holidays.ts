@@ -7,7 +7,7 @@ export const getAllHolidays = async (token: string, userId: string, userEmail: s
         .from('holidays')
         .select('*')
         .filter('participants', 'cs', `{${userEmail}}`)
-        .order('start_date', { ascending: true })
+        .order('start_date', { ascending: false })
         .limit(1000);
     if (error) throw error;
 

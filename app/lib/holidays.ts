@@ -27,7 +27,7 @@ export const getHolidayById = async (token: string, holidayId: string) => {
     ]);
     if (holidayData.error || accommodationsData.error) {
         throw {
-            error: 'Cannot retrieve detail of holiday',
+            error: `Cannot retrieve detail of holiday: ${holidayData.error} | ${accommodationsData.error}`,
         };
     }
     return {

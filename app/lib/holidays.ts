@@ -23,7 +23,6 @@ export const getHolidayById = async (token: string, holidayId: string) => {
             .from('accommodations')
             .select('*')
             .eq('holiday_id', holidayId)
-            .order('array_length(votes, 1)', { ascending: false }),
     ]);
     if (holidayData.error || accommodationsData.error) {
         throw {

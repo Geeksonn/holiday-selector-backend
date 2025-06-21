@@ -20,6 +20,7 @@ declare interface Accommodation {
     travel_time: number;
     description: string;
     website: string;
-    holiday_id: string;
-    votes: string[];
+    holiday_id: string; // ID of the holiday this accommodation belongs to
+    votes: string[]; // list of emails
+    added_by: string; // email of the user who added the accommodation
 }

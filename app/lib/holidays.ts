@@ -19,7 +19,11 @@ export const getHolidayById = async (token: string, holidayId: string) => {
 
     const [holidayData, accommodationsData] = await Promise.all([
         supabase.from('holidays').select('*').eq('id', holidayId),
-        supabase.from('accommodations').select('*').eq('holiday_id', holidayId),
+        supabase
+            .from('accommodations')
+            .select('*')
+            .eq('holiday_id', holidayId)
+            .order('array_length(votes, 1)', { ascending: false }),
     ]);
     if (holidayData.error || accommodationsData.error) {
         throw {
@@ -53,10 +57,7 @@ export const deleteHoliday = async (token: string, holidayId: string) => {
 export const updateHoliday = async (token: string, holidayId: string, updates: Partial<Holiday>) => {
     const supabase = await createClient(token);
 
-    const { data, error } = await supabase
-        .from('holidays')
-        .update(updates)
-        .eq('id', holidayId);
+    const { data, error } = await supabase.from('holidays').update(updates).eq('id', holidayId);
     if (error) throw error;
 
     return data;

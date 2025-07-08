@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import z from 'zod';
 
@@ -26,7 +26,7 @@ const Input: React.FC<InputProps> = ({ label, name, error, register }) => {
     );
 };
 
-export default function ResetPasswordPage() {
+const ResetForm: React.FC = () => {
     const [success, setSuccess] = React.useState<boolean>(false);
     const [error, setError] = React.useState<string>();
     const [criticalError, setCriticalError] = React.useState<string>();
@@ -163,5 +163,13 @@ export default function ResetPasswordPage() {
                 </button>
             )}
         </div>
+    );
+};
+
+export default function ResetPasswordPage() {
+    return (
+        <Suspense>
+            <ResetForm />
+        </Suspense>
     );
 }

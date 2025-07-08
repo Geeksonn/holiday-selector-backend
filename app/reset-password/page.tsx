@@ -75,43 +75,42 @@ const ResetForm: React.FC = () => {
         setSuccess(true);
     };
 
-    React.useEffect(() => {
-        const setSession = async () => {
-            searchParams.forEach((sp) => {
-                console.log('SearchParams::', sp);
-            });
-            searchParams.entries().forEach((sp) => {
-                console.log('SearchParams::', sp[0], sp[1]);
-            });
-            const token = searchParams.get('token');
-            const type = searchParams.get('type');
+    const setSession = async () => {
+        console.log('## Inside setSession ##');
+        searchParams.forEach((sp) => {
+            console.log('SearchParams::', sp);
+        });
+        searchParams.entries().forEach((sp) => {
+            console.log('SearchParams::', sp[0], sp[1]);
+        });
+        const token = searchParams.get('token');
+        const type = searchParams.get('type');
 
-            if (type === 'recovery' && token) {
-                try {
-                    const { error } = await supabase.auth.verifyOtp({
-                        token_hash: token,
-                        type: 'recovery',
-                    });
+        if (type === 'recovery' && token) {
+            try {
+                const { error } = await supabase.auth.verifyOtp({
+                    token_hash: token,
+                    type: 'recovery',
+                });
 
-                    if (error) {
-                        console.error('Error while setting session', error);
-                        setCriticalError('Link for reinitializing the password is invalid or has expired.');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    setCriticalError('Error while validating the link.');
+                if (error) {
+                    console.error('Error while setting session', error);
+                    setCriticalError('Link for reinitializing the password is invalid or has expired.');
                 }
-            } else {
-                // Si les paramètres ne sont pas présents
-                console.log('type ? ', type);
-                console.log('token?', token);
-                searchParams.entries().map((sp) => console.log('SearchParams::', sp[0], sp[1]));
-                setCriticalError('Link for reinitializing the password is invalid.');
+            } catch (error) {
+                console.error('Error:', error);
+                setCriticalError('Error while validating the link.');
             }
-        };
+        } else {
+            // Si les paramètres ne sont pas présents
+            console.log('type ? ', type);
+            console.log('token?', token);
+            searchParams.entries().map((sp) => console.log('SearchParams::', sp[0], sp[1]));
+            setCriticalError('Link for reinitializing the password is invalid.');
+        }
+    };
 
-        setSession();
-    }, [searchParams]);
+    setSession();
 
     if (success) {
         return (

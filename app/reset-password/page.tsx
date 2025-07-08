@@ -97,6 +97,9 @@ const ResetForm: React.FC = () => {
                 }
             } else {
                 // Si les paramètres ne sont pas présents
+                console.log('type ? ', type);
+                console.log('token?', token);
+                searchParams.entries().map((sp) => console.log('SearchParams::', sp[0], sp[1]));
                 setCriticalError('Link for reinitializing the password is invalid.');
             }
         };

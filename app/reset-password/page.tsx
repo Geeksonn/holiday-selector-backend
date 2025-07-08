@@ -6,7 +6,7 @@ import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import z from 'zod';
 
 import { createClient } from '@supabase/supabase-js';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 type InputProps = {
     label: string;

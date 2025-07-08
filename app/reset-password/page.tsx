@@ -77,16 +77,14 @@ const ResetForm: React.FC = () => {
 
     React.useEffect(() => {
         const setSession = async () => {
-            const accessToken = searchParams.get('access_token');
-            const refreshToken = searchParams.get('refresh_token');
+            const token = searchParams.get('token');
             const type = searchParams.get('type');
-            console.log('serchParams', searchParams);
 
-            if (type === 'recovery' && accessToken) {
+            if (type === 'recovery' && token) {
                 try {
-                    const { error } = await supabase.auth.setSession({
-                        access_token: accessToken,
-                        refresh_token: refreshToken || '',
+                    const { error } = await supabase.auth.verifyOtp({
+                        token_hash: token,
+                        type: 'recovery',
                     });
 
                     if (error) {

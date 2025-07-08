@@ -29,9 +29,9 @@ const Input: React.FC<InputProps> = ({ label, name, error, register }) => {
 const ResetForm: React.FC = () => {
     const [success, setSuccess] = React.useState<boolean>(false);
     const [error, setError] = React.useState<string>();
-    const [criticalError, setCriticalError] = React.useState<string>();
+    //const [criticalError, setCriticalError] = React.useState<string>();
 
-    const searchParams = useSearchParams();
+    //const searchParams = useSearchParams();
     const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL || '',
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
@@ -127,6 +127,7 @@ const ResetForm: React.FC = () => {
         );
     }
 
+    /*
     if (criticalError) {
         return (
             <div className='flex flex-col items-center gap-y-6 w-1/2 mx-auto p-4'>
@@ -137,6 +138,7 @@ const ResetForm: React.FC = () => {
             </div>
         );
     }
+        */
 
     return (
         <div className='flex flex-col items-center gap-y-6 w-1/2 mx-auto p-4'>

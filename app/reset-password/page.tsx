@@ -80,6 +80,9 @@ const ResetForm: React.FC = () => {
             const accessToken = searchParams.get('access_token');
             const refreshToken = searchParams.get('refresh_token');
             const type = searchParams.get('type');
+            console.log('serchParams::access_token', accessToken);
+            console.log('serchParams::refresh_token', refreshToken);
+            console.log('serchParams::type', type);
 
             if (type === 'recovery' && accessToken) {
                 try {

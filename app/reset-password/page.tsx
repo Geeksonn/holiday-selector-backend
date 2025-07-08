@@ -6,7 +6,7 @@ import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import z from 'zod';
 
 import { createClient } from '@supabase/supabase-js';
-//import { useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 type InputProps = {
     label: string;
@@ -29,9 +29,9 @@ const Input: React.FC<InputProps> = ({ label, name, error, register }) => {
 const ResetForm: React.FC = () => {
     const [success, setSuccess] = React.useState<boolean>(false);
     const [error, setError] = React.useState<string>();
-    //const [criticalError, setCriticalError] = React.useState<string>();
+    const [criticalError, setCriticalError] = React.useState<string>();
 
-    //const searchParams = useSearchParams();
+    const searchParams = useSearchParams();
     const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL || '',
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
@@ -69,15 +69,16 @@ const ResetForm: React.FC = () => {
         if (error) {
             console.error('Error while resetting the password', error);
             setError('Error while resetting the password');
+            return;
         }
 
         reset();
         setSuccess(true);
     };
 
-    /*
     const setSession = async () => {
         console.log('## Inside setSession ##');
+        console.log('#SearchParams', searchParams.size, searchParams.keys().toArray().length);
         searchParams.forEach((sp) => {
             console.log('SearchParams::', sp);
         });
@@ -112,7 +113,6 @@ const ResetForm: React.FC = () => {
     };
 
     setSession();
-    */
 
     if (success) {
         return (
@@ -127,7 +127,7 @@ const ResetForm: React.FC = () => {
         );
     }
 
-    /*
+    
     if (criticalError) {
         return (
             <div className='flex flex-col items-center gap-y-6 w-1/2 mx-auto p-4'>
@@ -138,7 +138,6 @@ const ResetForm: React.FC = () => {
             </div>
         );
     }
-        */
 
     return (
         <div className='flex flex-col items-center gap-y-6 w-1/2 mx-auto p-4'>

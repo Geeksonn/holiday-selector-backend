@@ -77,6 +77,12 @@ const ResetForm: React.FC = () => {
 
     React.useEffect(() => {
         const setSession = async () => {
+            searchParams.forEach((sp) => {
+                console.log('SearchParams::', sp);
+            });
+            searchParams.entries().forEach((sp) => {
+                console.log('SearchParams::', sp[0], sp[1]);
+            });
             const token = searchParams.get('token');
             const type = searchParams.get('type');
 

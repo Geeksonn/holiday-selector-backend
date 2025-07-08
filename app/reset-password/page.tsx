@@ -75,6 +75,7 @@ const ResetForm: React.FC = () => {
         setSuccess(true);
     };
 
+    /*
     const setSession = async () => {
         console.log('## Inside setSession ##');
         searchParams.forEach((sp) => {
@@ -111,6 +112,7 @@ const ResetForm: React.FC = () => {
     };
 
     setSession();
+    */
 
     if (success) {
         return (

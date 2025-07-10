@@ -5,8 +5,6 @@ import React, { Suspense } from 'react';
 import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import z from 'zod';
 
-import { usePathname } from 'next/navigation';
-
 type InputProps = {
     label: string;
     name: string;
@@ -26,9 +24,9 @@ const Input: React.FC<InputProps> = ({ label, name, error, register }) => {
 };
 
 type FormProps = {
-    token: string;
+    access_token: string;
 };
-const ResetForm: React.FC<FormProps> = ({ token }) => {
+const ResetForm: React.FC<FormProps> = ({ access_token }) => {
     const [success, setSuccess] = React.useState<boolean>(false);
     const [error, setError] = React.useState<string>();
 
@@ -59,7 +57,7 @@ const ResetForm: React.FC<FormProps> = ({ token }) => {
 
         const resp = await fetch(process.env.NEXT_PUBLIC_BASE_URL + '/reset-password/api', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${access_token}` },
             body: JSON.stringify(data),
         });
         if (!resp.ok) {
@@ -70,45 +68,6 @@ const ResetForm: React.FC<FormProps> = ({ token }) => {
         reset();
         setSuccess(true);
     };
-
-    /*
-    const setSession = async () => {
-        console.log('## Inside setSession ##');
-        console.log('#SearchParams', searchParams.size, searchParams.keys().toArray().length);
-        searchParams.forEach((sp) => {
-            console.log('SearchParams::', sp);
-        });
-        searchParams.entries().forEach((sp) => {
-            console.log('SearchParams::', sp[0], sp[1]);
-        });
-        const token = searchParams.get('token');
-        const type = searchParams.get('type');
-
-        if (type === 'recovery' && token) {
-            try {
-                const { error } = await supabase.auth.verifyOtp({
-                    token_hash: token,
-                    type: 'recovery',
-                });
-
-                if (error) {
-                    console.error('Error while setting session', error);
-                    setCriticalError('Link for reinitializing the password is invalid or has expired.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                setCriticalError('Error while validating the link.');
-            }
-        } else {
-            // Si les paramètres ne sont pas présents
-            console.log('type ? ', type);
-            console.log('token?', token);
-            searchParams.entries().map((sp) => console.log('SearchParams::', sp[0], sp[1]));
-            setCriticalError('Link for reinitializing the password is invalid.');
-        }
-    };
-
-    setSession();*/
 
     if (success) {
         return (
@@ -160,33 +119,12 @@ const ResetForm: React.FC<FormProps> = ({ token }) => {
     );
 };
 
-export default function ResetPasswordPage() {
-    React.useEffect(() => {
-        console.log('useEffect ? ')
-        // Get the access token and refresh token from the URL
-        if (typeof window !== 'undefined') {
-            const hashParams = new URLSearchParams(window.location.hash.substring(1));
-            console.log('access_token ? ', hashParams.get('access_token'));
-            console.log('access_token ? ', hashParams.get('refresh_token'));
-        }
-    }, []);
+type Params = {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+export default function ResetPasswordPage({ searchParams }: Params) {
+    const params = React.use(searchParams);
 
-    const params = { access_token: 'a', refresh_token: 'b' }
-
-    /*
-    const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-    supabase.auth.onAuthStateChange((event, session) => {
-        console.log('onAuth', event, session);
-        if (event === 'PASSWORD_RECOVERY') {
-            console.log('PASSWORD_RECOVERY', session);
-        }
-    });
-    */
-
-    /*
     if (params.error || !params.access_token) {
         return (
             <div className='flex flex-col items-center gap-y-6 w-1/2 mx-auto p-4'>
@@ -196,12 +134,12 @@ export default function ResetPasswordPage() {
                 </div>
             </div>
         );
-    }*/
+    }
 
-    const token = Array.isArray(params.access_token) ? params.access_token[0] : params.access_token;
+    const access_token = Array.isArray(params.access_token) ? params.access_token[0] : params.access_token;
     return (
         <Suspense>
-            <ResetForm token={token} />
+            <ResetForm access_token={access_token} />
         </Suspense>
     );
 }

@@ -1,48 +1,42 @@
 import { createClient } from '@/utils/supabase';
-import { createClient as createClientSupabase } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 import { NextRequest } from 'next/server';
 
-type Params = {
-    token: string;
-    type: string;
-};
-export async function GET(request: NextRequest, { params }: { params: Promise<Params> }) {
+export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
-    const type = searchParams.get('type');
     const token = searchParams.get('token');
 
-    if (!token || type !== 'recovery') {
-        console.error(`Reset Password API didn't receive necessary params`, await params);
+    if (!token) {
+        console.error(`Reset Password API didn't receive necessary params`);
         redirect('/reset-password?error=no_params');
     }
 
-    const supabase = await createClient(token);
+    const supabase = await createClient();
     const { data, error } = await supabase.auth.verifyOtp({
         token_hash: token,
-        type: 'recovery',
+        type: 'email',
     });
 
     if (error) {
-        console.error(`Cannot validate params received`, token, type, error);
+        console.error(`Cannot validate params received`, token, error);
         redirect('/reset-password?error=invalid_params');
     }
 
-    redirect(`/reset-password?token=${token}`);
+    if (data.session) {
+        const { access_token } = data.session;
+        redirect(`/reset-password?access_token=${access_token}`);
+    }
+
+    redirect(`/reset-password?error=no_session_found`);
 }
 
 export async function POST(request: Request) {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
-    //const supabase = await createClientSupabase(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!);
-    const supabase = await createClient(token!);
-    //supabase.auth.setSession()
-    /*
-    console.log('Token ? ', token);
 
     if (!token) {
         return Response.json({ error: 'Missing Authorization header' }, { status: 401 });
-    }*/
-    //const supabase = await createClient(token);
+    }
+    const supabase = await createClient(token);
 
     const data = await request.json();
 

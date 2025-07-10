@@ -62,7 +62,13 @@ const ResetForm: React.FC<FormProps> = ({ access_token }) => {
         });
         if (!resp.ok) {
             const error = await resp.json();
-            setError(error.error);
+            let errorMessage;
+            if (error.code === 'same_password') {
+                errorMessage = 'New password must be different from old password';
+            } else {
+                errorMessage = `Cannot reset password [code: ${error.code}]`;
+            }
+            setError(errorMessage);
             return;
         }
 

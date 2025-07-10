@@ -55,7 +55,7 @@ const ResetForm: React.FC<FormProps> = ({ access_token }) => {
             return;
         }
 
-        const resp = await fetch(process.env.NEXT_PUBLIC_BASE_URL + '/reset-password/api', {
+        const resp = await fetch('/reset-password/api', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${access_token}` },
             body: JSON.stringify(data),

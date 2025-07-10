@@ -46,7 +46,7 @@ export async function POST(request: Request) {
 
     if (error) {
         console.error('Error while setting new password', error);
-        return Response.json({ error: 'Cannot reset password' }, { status: 400 });
+        return Response.json({ error: `Cannot reset password: ${error}` }, { status: 400 });
     }
 
     return Response.json({ message: 'ok' }, { status: 200 });

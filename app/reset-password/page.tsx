@@ -61,7 +61,8 @@ const ResetForm: React.FC<FormProps> = ({ access_token }) => {
             body: JSON.stringify(data),
         });
         if (!resp.ok) {
-            setError('An error occured while setting the new password');
+            const error = await resp.json();
+            setError(error.error);
             return;
         }
 
